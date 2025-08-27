@@ -99,7 +99,8 @@ function downloadData() {
     */
 
     // hardcoding
-    url = "https://raw.githubusercontent.com/NitroNik7/TSR-Frontend/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineData.csv";
+    url = "https://raw.githubusercontent.com/NitroNik7/nitronik7.github.io/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineDataDaily.csv";
+    // url = "https://raw.githubusercontent.com/NitroNik7/TSR-Frontend/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineData.csv";
     downloadAndProcess(url)
 }
 
