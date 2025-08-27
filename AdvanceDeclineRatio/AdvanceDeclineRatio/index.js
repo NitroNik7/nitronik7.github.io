@@ -104,7 +104,7 @@ function downloadData() {
 }
 
 async function downloadAndProcess(url) {
-    let upData = await d3.csv(url, d => d);
+    let upData = await d3.tsv(url, d => d);
 
     if (today) {
         todaysData = upData;
