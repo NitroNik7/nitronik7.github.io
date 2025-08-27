@@ -245,7 +245,7 @@ function drawChartFromData() {
     // code starts here
     for (var i = 0; i < upData.length; i++) {
         var d = upData[i];
-        console.log(d, d.Date, d.Advances);
+        // console.log(d, d.Date, d.Advances);
         if (!isNaN(parseDate(d.Date, dateFormat)) && d.Advances != '' && d.Declines != '')
             data.push({ 'Date': parseDate(d.Date, dateFormat), 'Advances': Number(d.Advances), 'Declines': Number(d.Declines) });
     }
