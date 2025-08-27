@@ -12,6 +12,10 @@ var circleStyle = 'fill-opacity: 0.2; stroke-width: 1.5;';
 let circleRadius = 3;
 var crosshairStyle = 'stroke: gray; stroke-width: 1; stroke-dasharray: 3;';
 let xAxisTickFreq = d3.timeMinute.every(10);
+// import d3 from "./d3.v7"
+
+xAxisTickFreq = d3.timeMonth.every(1);
+
 
 let tooltipStyle = ` 
         display: block; 
@@ -105,7 +109,7 @@ function downloadData() {
 }
 
 async function downloadAndProcess(url) {
-    let upData = await d3.tsv(url, d => d);
+    let upData = await d3.csv(url, d => d);
 
     if (today) {
         todaysData = upData;
@@ -115,22 +119,37 @@ async function downloadAndProcess(url) {
     drawChartFromData();
 }
 
-function parseDate(date) {
+// TODO
+function parseDate(date, dateFormat) {
     // The date and time string to parse
     let dateString = '' + date;
-    // Split the string into components: day, month, year, hour, and minute
-    const parts = dateString.split('_');
-    const day = parseInt(parts[0]);
-    const month = parseInt(parts[1]) - 1; // Months are 0-based in JavaScript (0 = January)
-    const year = parseInt(parts[2]);
-    const hour = parseInt(parts[3]);
-    const minute = parseInt(parts[4]);
 
-    // Create a new Date object
-    const parsedDate = new Date(year, month, day, hour, minute);
+    if (dateFormat == 'dd/MM/yyyy') {
+        const parts = dateString.split('/');
 
-    // Log the result to the console
-    return parsedDate;
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1; // Months are 0-based in JavaScript (0 = January)
+        const year = parseInt(parts[2]);
+
+        const parsedDate = new Date(year, month, day);
+
+        return parsedDate;
+    }
+    else {
+        // Split the string into components: day, month, year, hour, and minute
+        const parts = dateString.split('_');
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1; // Months are 0-based in JavaScript (0 = January)
+        const year = parseInt(parts[2]);
+        const hour = parseInt(parts[3]);
+        const minute = parseInt(parts[4]);
+
+        // Create a new Date object
+        const parsedDate = new Date(year, month, day, hour, minute);
+
+        // Log the result to the console
+        return parsedDate;
+    }
 }
 
 function drawChart(divIdArg, paramsArg) {
@@ -225,8 +244,9 @@ function drawChartFromData() {
     // code starts here
     for (var i = 0; i < upData.length; i++) {
         var d = upData[i];
-        if (!isNaN(parseDate(d.Date)) && d.Advances != '' && d.Declines != '')
-            data.push({ 'Date': parseDate(d.Date), 'Advances': Number(d.Advances), 'Declines': Number(d.Declines) });
+        console.log(d, d.Date, d.Advances);
+        if (!isNaN(parseDate(d.Date, 'dd/MM/yyyy')) && d.Advances != '' && d.Declines != '')
+            data.push({ 'Date': parseDate(d.Date, 'dd/MM/yyyy'), 'Advances': Number(d.Advances), 'Declines': Number(d.Declines) });
     }
 
     const svg = d3.select(`#${divId}`)
@@ -395,4 +415,3 @@ function drawChartFromData() {
     }
 }
 
-drawChart("chartContainer", null);
