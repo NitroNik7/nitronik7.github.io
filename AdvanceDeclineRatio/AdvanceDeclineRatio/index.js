@@ -415,3 +415,4 @@ function drawChartFromData() {
     }
 }
 
+drawChart("chartContainer", null);
