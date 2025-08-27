@@ -11,11 +11,8 @@ var lineStyle = 'fill: none; stroke-width: 1.25 px;'
 var circleStyle = 'fill-opacity: 0.2; stroke-width: 1.5;';
 let circleRadius = 3;
 var crosshairStyle = 'stroke: gray; stroke-width: 1; stroke-dasharray: 3;';
-let xAxisTickFreq = d3.timeMinute.every(10);
-// import d3 from "./d3.v7"
 
-xAxisTickFreq = d3.timeMonth.every(1);
-
+let url, dateFormat;
 
 let tooltipStyle = ` 
         display: block; 
@@ -67,7 +64,7 @@ function downloadData() {
         filePrefix = 'D';
     }
 
-    var url = '//' + window.location.hostname + '/charts/'
+    // var url = '//' + window.location.hostname + '/charts/'
 
     // TODO
     // if(jsu.isMigContext()){
@@ -103,7 +100,7 @@ function downloadData() {
     */
 
     // hardcoding
-    url = "https://raw.githubusercontent.com/NitroNik7/nitronik7.github.io/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineDataDaily.csv";
+    // url = "https://raw.githubusercontent.com/NitroNik7/nitronik7.github.io/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineDataDaily.csv";
     // url = "https://raw.githubusercontent.com/NitroNik7/TSR-Frontend/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineData.csv";
     downloadAndProcess(url)
 }
@@ -238,6 +235,10 @@ function drawChartFromData() {
 
         */
 
+    var chartContainer = $('#' + divId);
+    chartContainer.empty();
+    $('#tooltipDiv').remove();
+
     setDimensions(params, $(`#${divId}`));
 
     var data = [];
@@ -245,8 +246,8 @@ function drawChartFromData() {
     for (var i = 0; i < upData.length; i++) {
         var d = upData[i];
         console.log(d, d.Date, d.Advances);
-        if (!isNaN(parseDate(d.Date, 'dd/MM/yyyy')) && d.Advances != '' && d.Declines != '')
-            data.push({ 'Date': parseDate(d.Date, 'dd/MM/yyyy'), 'Advances': Number(d.Advances), 'Declines': Number(d.Declines) });
+        if (!isNaN(parseDate(d.Date, dateFormat)) && d.Advances != '' && d.Declines != '')
+            data.push({ 'Date': parseDate(d.Date, dateFormat), 'Advances': Number(d.Advances), 'Declines': Number(d.Declines) });
     }
 
     const svg = d3.select(`#${divId}`)
@@ -327,6 +328,7 @@ function drawChartFromData() {
 
     // tooltip div
     let div = document.createElement("div");
+    div.id = "tooltipDiv";
     div.style.display = "block";
     div.style.position = "absolute";
     div.setAttribute("style", tooltipStyle);
@@ -415,4 +417,17 @@ function drawChartFromData() {
     }
 }
 
-drawChart("chartContainer", null);
+function draw(tick) {
+    if (tick == 'intraday') {
+        dateFormat = ``;
+        xAxisTickFreq = d3.timeMinute.every(10);
+        url = `https://raw.githubusercontent.com/NitroNik7/TSR-Frontend/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineData.csv`;
+        drawChart('chartContainer', null);
+    }
+    else if (tick == "eod") {
+        xAxisTickFreq = d3.timeMonth.every(1);
+        dateFormat = `dd/MM/yyyy`;
+        url = `https://raw.githubusercontent.com/NitroNik7/nitronik7.github.io/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineDataDaily.csv`;
+        drawChart('chartContainer', null);
+    }
+}
