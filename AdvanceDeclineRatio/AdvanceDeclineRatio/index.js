@@ -7,9 +7,10 @@ var divId, params, period;
 var today;
 var smallDimension;
 
-var lineStyle = 'fill: none; stroke-width: 1.25 px;'
-var circleStyle = 'fill-opacity: 0.2; stroke-width: 1.5;';
-let circleRadius = 3;
+var xAxisTickSpacing;
+var lineStyle = 'fill: none; stroke-width: 2;'
+var circleStyle = 'fill-opacity: 0.2; stroke-width: 2;';
+let circleRadius = 4;
 var crosshairStyle = 'stroke: gray; stroke-width: 1; stroke-dasharray: 3;';
 
 let url, dateFormat;
@@ -34,12 +35,12 @@ function setDimensions(params, chartDiv) {
 
     smallDimension = width < 500 ? true : false;
 
-    if (smallDimension) {
-        margin.left = 5;
-        margin.right = 5;
-        margin.top = 5;
-        margin.bottom = 35;
-    }
+    // if (smallDimension) {
+    //     margin.left = 5;
+    //     margin.right = 5;
+    //     margin.top = 5;
+    //     margin.bottom = 35;
+    // }
 
     width = chartDiv.width() - margin.left - margin.right;
 
@@ -256,6 +257,8 @@ function drawChartFromData() {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom);
 
+    let xAxisTickFreq = parseInt((width + margin.left + margin.right) / xAxisTickSpacing);
+    console.log(xAxisTickFreq);
 
     const x = d3.scaleTime()
         .domain(d3.extent(data, function (d) { return d.Date }))
@@ -265,9 +268,15 @@ function drawChartFromData() {
         .call(d3.axisBottom(x)
             .ticks(xAxisTickFreq));
 
+    let totalStocks = d3.max(data, function (d) { return d.Declines + d.Advances });
+    let minY = d3.min(data, function (d) { return d.Declines });
+    minY = parseInt(minY - ((5 / 100) * totalStocks));
+    let maxY = d3.max(data, function (d) { return d.Advances });
+    maxY = parseInt(maxY + ((5 / 100) * totalStocks));
+
     // Add Y axis
     const y = d3.scaleLinear()
-        .domain([0, d3.max(data, function (d) { return d.Advances + d.Declines })])
+        .domain([minY, maxY])
         .range([height, 0]);
     svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
@@ -421,23 +430,22 @@ function drawChartFromData() {
 }
 
 function draw(tick) {
+    xAxisTickSpacing = 100;
     if (tick == 'intraday') {
         dateFormat = ``;
-        xAxisTickFreq = d3.timeMinute.every(10);
         url = `https://raw.githubusercontent.com/NitroNik7/TSR-Frontend/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineData.csv`;
     }
     else if (tick == "eod") {
-        xAxisTickFreq = d3.timeMonth.every(1);
         dateFormat = `dd/MM/yyyy`;
         url = `https://raw.githubusercontent.com/NitroNik7/nitronik7.github.io/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineDataDaily.csv`;
     }
     drawChart('chartContainer', null);
 }
 
-$(window).resize(function() {
+$(window).resize(function () {
 
     drawChart
-    	// reDraw();
-            drawChart('chartContainer', null);
-    	// lc.dcfd();
-    });
+    // reDraw();
+    drawChart('chartContainer', null);
+    // lc.dcfd();
+});

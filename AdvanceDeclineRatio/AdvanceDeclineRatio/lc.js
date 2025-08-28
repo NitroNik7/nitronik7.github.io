@@ -314,8 +314,13 @@ var lc = (function () {
 		focus.append("circle").attr('style', circleStyle).attr("r", 3);
 
 		focus.append("rect")
-			.attr("style", tooltipStyle).attr("width", 80)
-			.attr("height", 37).attr("x", 5).attr("y", -22).attr("rx", 4).attr("ry", 4);
+			.attr("style", tooltipStyle)
+			.attr("width", 80)
+			.attr("height", 37)
+			.attr("x", 5)
+			.attr("y", -22)
+			.attr("rx", 4)
+			.attr("ry", 4);
 
 		focus.append("text").attr('class', 'ttDate').attr("x", 10).attr("y", -7);
 
