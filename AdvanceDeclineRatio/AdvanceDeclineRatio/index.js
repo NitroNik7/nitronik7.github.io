@@ -12,7 +12,9 @@ var xAxisTickSpacing;
 var xAxisStyle = "stroke-width: 1.5; ";
 var yAxisStyle = "stroke-width: 1.5; ";
 
-var lineStyle = 'fill: none; stroke-width: 2;'
+var advancesLineStyle = 'fill: none; stroke-width: 2; stroke: #0ca08a;';
+var declinesLineStyle = 'fill: none; stroke-width: 2; stroke: red;'
+
 var circleStyle = 'fill-opacity: 0.2; stroke-width: 2;';
 let circleRadius = 4;
 var crosshairStyle = 'stroke: gray; stroke-width: 1; stroke-dasharray: 3;';
@@ -254,6 +256,9 @@ function drawChartFromData() {
         // console.log(d, d.Date, d.Advances);
         if (!isNaN(parseDate(d.Date, dateFormat)) && d.Advances != '' && d.Declines != '')
             data.push({ 'Date': parseDate(d.Date, dateFormat), 'Advances': Number(d.Advances), 'Declines': Number(d.Declines) });
+
+        if(data.length == 50)
+            break;
     }
 
     const svg = d3.select(`#${divId}`)
@@ -294,8 +299,7 @@ function drawChartFromData() {
     // Advances
     svg.append("path")
         .datum(data)
-        .attr("style", lineStyle)
-        .attr("stroke", "green")
+        .attr("style", advancesLineStyle)
         .attr("d", advances)
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -306,8 +310,7 @@ function drawChartFromData() {
     // Declines
     svg.append("path")
         .datum(data)
-        .attr("style", lineStyle)
-        .attr("stroke", "red")
+        .attr("style", declinesLineStyle)
         .attr("d", declines)
         .attr("transform", `translate(${margin.left}, 0)`);
 
