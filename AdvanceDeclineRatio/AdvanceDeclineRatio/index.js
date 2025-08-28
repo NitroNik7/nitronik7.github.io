@@ -15,7 +15,8 @@ var yAxisStyle = "stroke-width: 1.5; ";
 var advancesLineStyle = 'fill: none; stroke-width: 2; stroke: #0ca08a;';
 var declinesLineStyle = 'fill: none; stroke-width: 2; stroke: red;'
 
-var circleStyle = 'fill-opacity: 0.2; stroke-width: 2;';
+var circleAdvancesStyle = 'fill-opacity: 0.2; stroke-width: 2; fill: #0ca08a; stroke: #0ca08a';
+var circleDeclinesStyle = 'fill-opacity: 0.2; stroke-width: 2; fill: red; stroke: red';
 let circleRadius = 4;
 var crosshairStyle = 'stroke: gray; stroke-width: 1; stroke-dasharray: 3;';
 
@@ -317,18 +318,14 @@ function drawChartFromData() {
     let circleAdvances = svg.append("g")
         .append("circle")
         .attr("r", circleRadius)
-        .attr("style", circleStyle)
-        .attr("fill", "green")
-        .attr("stroke", "green")
+        .attr("style", circleAdvancesStyle)
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr("opacity", 0);
 
     let circleDeclines = svg.append("g")
         .append("circle")
         .attr("r", circleRadius)
-        .attr("style", circleStyle)
-        .attr("fill", "red")
-        .attr("stroke", "red")
+        .attr("style", circleDeclinesStyle)
         .attr("transform", "translate(" + margin.left + "," + 0 + ")")
         .attr("opacity", 0);
 
