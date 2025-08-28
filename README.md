@@ -1,3 +1,3 @@
-#Advance Decline Ratio 
+# Advance Decline Ratio 
 
-$$ ADR = {No. of Advances \over No. of Declines} $$
+$$ ADR = {No. of &nbsp; Advances \over No. of &nbsp; Declines} $$
