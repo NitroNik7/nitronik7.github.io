@@ -8,6 +8,8 @@ var today;
 var smallDimension;
 
 var xAxisTickSpacing;
+var xAxisStyle = "stroke-width: 1.5; font-weight: 600";
+var yAxisStyle = "stroke-width: 1.5; font-weight: 600";
 var lineStyle = 'fill: none; stroke-width: 2;'
 var circleStyle = 'fill-opacity: 0.2; stroke-width: 2;';
 let circleRadius = 4;
@@ -258,7 +260,6 @@ function drawChartFromData() {
         .attr("height", height + margin.top + margin.bottom);
 
     let xAxisTickFreq = parseInt((width + margin.left + margin.right) / xAxisTickSpacing);
-    console.log(xAxisTickFreq);
 
     const x = d3.scaleTime()
         .domain(d3.extent(data, function (d) { return d.Date }))
@@ -266,7 +267,8 @@ function drawChartFromData() {
     svg.append("g")
         .attr("transform", `translate(${margin.left}, ${height + margin.top})`)
         .call(d3.axisBottom(x)
-            .ticks(xAxisTickFreq));
+        .ticks(xAxisTickFreq))
+        .attr("style", xAxisStyle);
 
     let totalStocks = d3.max(data, function (d) { return d.Declines + d.Advances });
     let minY = d3.min(data, function (d) { return d.Declines });
@@ -280,7 +282,8 @@ function drawChartFromData() {
         .range([height, 0]);
     svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y))
+        .attr("style", yAxisStyle);
 
     let advances = d3.line()
         .x(function (d) { return x(d.Date) })
