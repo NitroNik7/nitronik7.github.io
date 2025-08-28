@@ -449,3 +449,4 @@ $(window).resize(function () {
     drawChart('chartContainer', null);
     // lc.dcfd();
 });
+
