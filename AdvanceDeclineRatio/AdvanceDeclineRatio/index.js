@@ -391,7 +391,7 @@ function drawChartFromData() {
             circleDeclines.attr("cx", xCord);
             circleDeclines.attr("cy", y(selectedData.Declines));
 
-            if (xCord > window.innerWidth / 2) { // if mouse is on rhs of screen
+            if (xCord > width / 2) { // if mouse is on rhs of screen
                 div.style.left = xCord - div.getBoundingClientRect().width + 15 + "px"
             }
             else {
