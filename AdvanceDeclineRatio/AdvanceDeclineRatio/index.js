@@ -13,6 +13,7 @@ let circleRadius = 3;
 var crosshairStyle = 'stroke: gray; stroke-width: 1; stroke-dasharray: 3;';
 
 let url, dateFormat;
+let svgId;
 
 let tooltipStyle = ` 
         display: block; 
@@ -255,6 +256,7 @@ function drawChartFromData() {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom);
 
+
     const x = d3.scaleTime()
         .domain(d3.extent(data, function (d) { return d.Date }))
         .range([0, width]);
@@ -315,6 +317,7 @@ function drawChartFromData() {
 
     // rect for capturing mouse interactions
     svg.append("rect")
+        .attr("id", "rectOverlay")
         .attr("width", width)
         .attr("height", height)
         .attr("opacity", 0)
@@ -412,7 +415,7 @@ function drawChartFromData() {
         d3.select("#crosshair")
             .attr("opacity", "0");
 
-        if (!div.isConnected)
+        if (e.target != div || e.target != document.getElementById("rectOverlay"))
             document.body.removeChild(div);
     }
 }
@@ -422,12 +425,19 @@ function draw(tick) {
         dateFormat = ``;
         xAxisTickFreq = d3.timeMinute.every(10);
         url = `https://raw.githubusercontent.com/NitroNik7/TSR-Frontend/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineData.csv`;
-        drawChart('chartContainer', null);
     }
     else if (tick == "eod") {
         xAxisTickFreq = d3.timeMonth.every(1);
         dateFormat = `dd/MM/yyyy`;
         url = `https://raw.githubusercontent.com/NitroNik7/nitronik7.github.io/refs/heads/nitro/AdvanceDeclineRatio/AdvanceDeclineRatio/AdvanceDeclineDataDaily.csv`;
-        drawChart('chartContainer', null);
     }
+    drawChart('chartContainer', null);
 }
+
+$(window).resize(function() {
+
+    drawChart
+    	// reDraw();
+            drawChart('chartContainer', null);
+    	// lc.dcfd();
+    });
