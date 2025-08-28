@@ -9,8 +9,8 @@ var smallDimension;
 
 var xAxisTickSpacing;
 
-var xAxisStyle = "stroke-width: 1.5; font-weight: 600";
-var yAxisStyle = "stroke-width: 1.5; font-weight: 600";
+var xAxisStyle = "stroke-width: 1.5; ";
+var yAxisStyle = "stroke-width: 1.5; ";
 
 var lineStyle = 'fill: none; stroke-width: 2;'
 var circleStyle = 'fill-opacity: 0.2; stroke-width: 2;';
